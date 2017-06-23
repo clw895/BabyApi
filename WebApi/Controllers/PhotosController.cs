@@ -11,16 +11,16 @@ using Twilio.TwiML;
 
 namespace WebApi.Controllers
 {
-    public class PhotoController : ApiController
+    public class PhotosController : ApiController
     {
         [HttpGet]
         public HttpResponseMessage Get()
         {
-            var message = new Message();
+            Message message = new Message();
             message.Body("This is the text of my message");
             message.Media(GetPhotoUrl());
 
-            var response = new MessagingResponse();
+            MessagingResponse response = new MessagingResponse();
             response.Message(message);
 
             return new HttpResponseMessage
@@ -31,12 +31,12 @@ namespace WebApi.Controllers
         }
         private string GetPhotoUrl()
         {
-            string ngrok = ConfigurationManager.AppSettings["NGROK_URL"].ToString();
-            string folder = ConfigurationManager.AppSettings["PHOTO_FOLDER"].ToString();
-            string backupUrl = @"https://c1.staticflickr.com/3/2899/14341091933_1e92e62d12_b.jpg";
+            const string ngrok = ConfigurationManager.AppSettings["NGROK_URL"].ToString();
+            const string folder = ConfigurationManager.AppSettings["PHOTO_FOLDER"].ToString();
+            const string backupUrl = @"https://c1.staticflickr.com/3/2899/14341091933_1e92e62d12_b.jpg";
 
             // FIND ONEDRIVE FOLDER
-            var userProfilePath = Environment.ExpandEnvironmentVariables("%USERPROFILE%");
+            const string userProfilePath = Environment.ExpandEnvironmentVariables("%USERPROFILE%");
             string directory = $"{userProfilePath}\\OneDrive\\{folder}";
 
             if (!Directory.Exists(directory))
@@ -54,9 +54,9 @@ namespace WebApi.Controllers
 
         private string SelectPhoto(string directory)
         {
-            var files = Directory.GetFiles(directory);
+            string[] files = Directory.GetFiles(directory);
             int index = new Random().Next(files.Length);
-            var temp = files[index].Split('\\');
+            string[] temp = files[index].Split('\\');
             return temp[temp.Length - 1];
         }
     }
