@@ -1,23 +1,19 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using System.Configuration;
 using Twilio.TwiML;
 
-namespace WebApi.Controllers
+namespace BabyApi.Controllers
 {
-    public class PhotoController : ApiController
+    public class PhotosController : ApiController
     {
         [HttpGet]
         public HttpResponseMessage Get()
         {
             var message = new Message();
-            message.Body("This is the text of my message");
+            message.Body("Enjoy the photo. Hope it makes you smile");
             message.Media(GetPhotoUrl());
 
             var response = new MessagingResponse();
@@ -31,9 +27,9 @@ namespace WebApi.Controllers
         }
         private string GetPhotoUrl()
         {
-            string ngrok = ConfigurationManager.AppSettings["NGROK_URL"].ToString();
-            string folder = ConfigurationManager.AppSettings["PHOTO_FOLDER"].ToString();
-            string backupUrl = @"https://c1.staticflickr.com/3/2899/14341091933_1e92e62d12_b.jpg";
+            string ngrok = "corey.ngrok.io";
+            string folder = "BabyPhotos";
+            string backupUrl = @"https://cdn.pixabay.com/photo/2016/04/01/09/26/emote-1299362_1280.png";
 
             // FIND ONEDRIVE FOLDER
             var userProfilePath = Environment.ExpandEnvironmentVariables("%USERPROFILE%");
@@ -42,7 +38,7 @@ namespace WebApi.Controllers
             if (!Directory.Exists(directory))
             {
                 // IF NO DIRECTORY, RETURN A SAD FACE
-                return "https://cdn.pixabay.com/photo/2016/04/01/09/26/emote-1299362_1280.png";
+                return backupUrl;
             }
 
             // PICK PHOTO
