@@ -46,23 +46,18 @@ namespace BabyApi.Controllers
                 var filePaths = Task.Run(()=>helper.GetFilePaths()).Result;
 
                 // SELECT RANDOM FILE
-                var selectedPath = SelectRandomFilePath(filePaths);
+                int index = new Random().Next(filePaths.Count);
 
                 // GET PUBLICLY ACCESSIBLE URI
-                photoUrl = Task.Run(()=> helper.GetFileUri(selectedPath)).Result;
+                photoUrl = Task.Run(()=> helper.GetFileUri(filePaths[index])).Result;
              }
             catch
             {
+                // If anything fails, send a sad face
                 photoUrl = backupUrl;
             }
 
             return photoUrl;
-        }
-
-        private string SelectRandomFilePath(List<string> filePaths)
-        {
-            int index = new Random().Next(filePaths.Count);
-            return filePaths[index];
         }
     }
 }

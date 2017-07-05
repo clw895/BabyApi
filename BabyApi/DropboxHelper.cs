@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 public class DropboxHelper
 {
-    private string AccessToken { get; } = "UPDATE_YOUR_ACCESS_TOKEN_HERE!";
+    private string AccessToken { get; } = "UPDATE_YOUR_ACCESS_TOKEN_HERE`";
     protected static HttpClient HttpClient { get; set; }
     public DropboxHelper()
 	{
