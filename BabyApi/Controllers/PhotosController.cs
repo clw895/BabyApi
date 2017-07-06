@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -11,16 +9,14 @@ namespace BabyApi.Controllers
 {
     public class PhotosController : ApiController
     {
-
         [HttpGet]
-        public HttpResponseMessage Get()
+        public async Task<HttpResponseMessage> Get()
         {
             var message = new Message();
             message.Body("Enjoy the photo. I hope it makes you smile");
 
-            var urlTask = GetPhotoUrl();
-            urlTask.Wait();
-            message.Media(urlTask.Result);
+            var urlTask =  await GetPhotoUrl();
+            message.Media(urlTask);
 
             var response = new MessagingResponse();
             response.Message(message);
@@ -43,13 +39,13 @@ namespace BabyApi.Controllers
                 var helper = new DropboxHelper();
 
                 // GET ALL PHOTO PATHS
-                var filePaths = Task.Run(()=>helper.GetFilePaths()).Result;
+                var filePaths = await helper.GetFilePaths();
 
                 // SELECT RANDOM FILE
                 int index = new Random().Next(filePaths.Count);
 
                 // GET PUBLICLY ACCESSIBLE URI
-                photoUrl = Task.Run(()=> helper.GetFileUri(filePaths[index])).Result;
+                photoUrl = await helper.GetFileUri(filePaths[index]);
              }
             catch
             {

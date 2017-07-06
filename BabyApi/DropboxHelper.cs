@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 public class DropboxHelper
 {
-    private string AccessToken { get; } = "UPDATE_YOUR_ACCESS_TOKEN_HERE`";
+    private string AccessToken { get; } = "UPDATE_YOUR_ACCESS_TOKEN_HERE";
     protected static HttpClient HttpClient { get; set; }
     public DropboxHelper()
 	{
@@ -30,8 +30,8 @@ public class DropboxHelper
             include_deleted = false,
             include_has_explicit_shared_members = false
         };
-
-        var response = Task.Run(()=> HttpClient.PostAsJsonAsync(path, postData)).Result;
+        var response = await HttpClient.PostAsJsonAsync(path, postData);
+        //var response = Task.Run(()=> HttpClient.PostAsJsonAsync(path, postData)).Result;
         var files = JObject.Parse(await response.Content.ReadAsStringAsync());
         var uris = files["entries"]
             .OrderByDescending(x => DateTime.Parse(x["server_modified"].ToString()))
@@ -49,7 +49,7 @@ public class DropboxHelper
             path = filePath
         };
 
-        var response = Task.Run(()=> HttpClient.PostAsJsonAsync(path, postData)).Result;
+        var response = await HttpClient.PostAsJsonAsync(path, postData);
         var files = JObject.Parse(await response.Content.ReadAsStringAsync());
         var link = files["link"].ToString();
         return link;
