@@ -31,7 +31,6 @@ public class DropboxHelper
             include_has_explicit_shared_members = false
         };
         var response = await HttpClient.PostAsJsonAsync(path, postData);
-        //var response = Task.Run(()=> HttpClient.PostAsJsonAsync(path, postData)).Result;
         var files = JObject.Parse(await response.Content.ReadAsStringAsync());
         var uris = files["entries"]
             .OrderByDescending(x => DateTime.Parse(x["server_modified"].ToString()))
