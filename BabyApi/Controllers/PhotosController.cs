@@ -32,7 +32,7 @@ namespace BabyApi.Controllers
             var backupUrl = @"https://cdn.pixabay.com/photo/2016/04/01/09/26/emote-1299362_1280.png";
 
             // GET DROPBOX FOLDERS
-            string photoUrl = String.Empty;
+            var photoUrl = string.Empty;
             try
             {
                 // CREATE DROPBOX HELPER
@@ -42,7 +42,7 @@ namespace BabyApi.Controllers
                 var filePaths = await helper.GetFilePaths();
 
                 // SELECT RANDOM FILE
-                int index = new Random().Next(filePaths.Count);
+                var index = new Random().Next(filePaths.Count);
 
                 // GET PUBLICLY ACCESSIBLE URI
                 photoUrl = await helper.GetFileUri(filePaths[index]);

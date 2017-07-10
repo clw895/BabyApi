@@ -20,17 +20,17 @@ public class DropboxHelper
 
     public async Task<List<string>> GetFilePaths()
     {
-        const string path = "list_folder";
+        const string urlPath = "list_folder";
 
         var postData = new
         {
-            path = String.Empty,
+            path = string.Empty,
             recursive = false,
             include_media_info = false,
             include_deleted = false,
             include_has_explicit_shared_members = false
         };
-        var response = await HttpClient.PostAsJsonAsync(path, postData);
+        var response = await HttpClient.PostAsJsonAsync(urlPath, postData);
         var files = JObject.Parse(await response.Content.ReadAsStringAsync());
         var uris = files["entries"]
             .OrderByDescending(x => DateTime.Parse(x["server_modified"].ToString()))
@@ -41,14 +41,14 @@ public class DropboxHelper
 
     public async Task<string> GetFileUri(string filePath)
     {
-        const string path = "get_temporary_link";
+        const string urlPath = "get_temporary_link";
 
         var postData = new
         {
             path = filePath
         };
 
-        var response = await HttpClient.PostAsJsonAsync(path, postData);
+        var response = await HttpClient.PostAsJsonAsync(urlPath, postData);
         var files = JObject.Parse(await response.Content.ReadAsStringAsync());
         var link = files["link"].ToString();
         return link;
